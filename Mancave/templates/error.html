@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Man Cave</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="card card-single">
+        <div class="form-section">
+
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Man Cave Fitness Gym" class="logo">
+
+            <h1 class="title">{{ code }}</h1>
+            <p class="subtitle">{{ message }}</p>
+
+            <div class="accent-line"></div>
+
+            <a href="{{ back }}" class="btn-link">Go back</a>
+
+        </div>
+    </div>
+
+</body>
+</html>

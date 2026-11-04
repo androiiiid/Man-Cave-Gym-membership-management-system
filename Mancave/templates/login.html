@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../static/logo.png" type="image/x-icon">
+    <title>Login - Man Cave</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Main Card Container -->
+    <div class="card">
+
+        <!-- Left Half: Form Section -->
+        <div class="form-section">
+
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Man Cave Fitness Gym" class="logo">
+
+            <h1 class="title">Welcome back</h1>
+            <p class="subtitle">Log in to your Man Cave account</p>
+
+            <!-- Gold Accent Line -->
+            <div class="accent-line"></div>
+
+            {% if expired %}
+            <p class="notice">You were logged out because you were inactive. Please log in again.</p>
+            {% endif %}
+
+            {% if registered %}
+            <p class="notice">Account created! You can log in now.</p>
+            {% endif %}
+
+            <!-- novalidate: the JavaScript shows errors in the popup instead of the browser's default bubbles -->
+            <form id="loginForm" action="{{ url_for('login') }}" method="POST" class="form" novalidate>
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div>
+                    <input type="email" id="email" name="email" placeholder="Email"
+                           autocomplete="email" value="{{ email }}"
+                           class="input {{ 'is-invalid' if 'email' in invalid }}">
+                </div>
+
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Password"
+                           autocomplete="current-password"
+                           class="input input-password {{ 'is-invalid' if 'password' in invalid }}">
+                    <button type="button" class="toggle-password" data-target="password" aria-label="Show password">
+                        <i class="fa-solid fa-eye-slash"></i>
+                    </button>
+                </div>
+
+                <label class="remember">
+                    <input type="checkbox" name="remember"> Keep me logged in for 1 day
+                </label>
+
+                <button type="submit" class="btn-submit">Login</button>
+
+            </form>
+
+            <p class="login-text">
+                Don't have an account? <a href="{{ url_for('register') }}" class="login-link">Create account</a>
+            </p>
+
+            <!-- Social Buttons -->
+            <div class="social-buttons">
+                <button type="button" class="social-btn">
+                    <i class="fa-brands fa-google icon-md"></i>
+                </button>
+                
+                <button type="button" class="social-btn">
+                    <i class="fa-brands fa-facebook-f icon-md"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Right Half: Image Section (desktop) -->
+        <div class="gym-image-bw image-desktop"></div>
+
+        <!-- Image Section (mobile) -->
+        <div class="gym-image-bw image-mobile"></div>
+
+    </div>
+
+    <!-- Error popup (filled in by login.js, or by Flask when the server finds errors) -->
+    <div class="modal-overlay{{ ' open' if errors }}" id="errorModal" aria-hidden="{{ 'false' if errors else 'true' }}">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="errorModalTitle">
+            <div class="modal-header">
+                <h2 class="modal-title" id="errorModalTitle">Unable to log in</h2>
+                <button type="button" class="modal-close" data-close aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">Please correct the following:</p>
+                <ul class="error-list" id="errorList">
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal" data-close>Okay</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='login.js') }}"></script>
+</body>
+</html>

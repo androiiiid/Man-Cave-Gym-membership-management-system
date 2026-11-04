@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Man Cave</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="card card-wide">
+        <div class="form-section">
+
+            <div class="topbar">
+                <div>
+                    <h1 class="title">Admin dashboard</h1>
+                    <p class="subtitle">Signed in as {{ user.first_name }} {{ user.last_name }}</p>
+                </div>
+                <div class="topbar-actions">
+                    <a href="{{ url_for('index') }}" class="btn-small">Member home</a>
+                    <form action="{{ url_for('logout') }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn-small">Log out</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="accent-line"></div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">{{ stats.members }}</div>
+                    <div class="stat-label">Members</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">{{ stats.new_week }}</div>
+                    <div class="stat-label">Joined in the last 7 days</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">{{ stats.admins }}</div>
+                    <div class="stat-label">Admins</div>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                {% if rows %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in rows %}
+                        <tr>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.email }}</td>
+                            <td>{{ row.mobile }}</td>
+                            <td>{% if row.role == 'admin' %}<span class="badge">Admin</span>{% else %}Member{% endif %}</td>
+                            <td>{{ row.joined }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="empty">No members yet.</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

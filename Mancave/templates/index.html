@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Man Cave</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="card card-single">
+        <div class="form-section">
+
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Man Cave Fitness Gym" class="logo">
+
+            <h1 class="title">Welcome, {{ user.first_name }}</h1>
+            <p class="subtitle">Your Man Cave membership</p>
+
+            <div class="accent-line"></div>
+
+            <div class="info-list">
+                <div class="info-row">
+                    <span class="info-label">Name</span>
+                    <span class="info-value">{{ user.first_name }} {{ user.last_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">{{ user.email }}</span>
+                    
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Mobile</span>
+                    <span class="info-value">{{ user.mobile or '—' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Member since</span>
+                    <span class="info-value">{{ user.created_at.strftime('%Y-%m-%d') }}</span>
+                </div>
+            </div>
+
+            <div class="actions">
+                {% if user.role == 'admin' %}
+                <a href="{{ url_for('admin_dashboard') }}" class="btn-link">Admin dashboard</a>
+                {% endif %}
+
+                <form action="{{ url_for('logout') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn-submit">Log out</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
